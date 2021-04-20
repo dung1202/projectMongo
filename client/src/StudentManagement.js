@@ -6,15 +6,15 @@ export default function StudentManagement() {
     
   let location = useLocation()
     const [students, setStudents] = useState([])
-    useEffect(() => {
-        getStudent().then(res => {
-            // console.log(res.data)
-            setStudents(res.data)
-        })
+    useEffect(async () => {
+        let a = 1
+       let result = await getStudent()
+       a = 2
+       setStudents(result.data)
+        console.log('end',a)
     }, [])
 
     const renderItem = (item,index) => {
-        console.log(item)
         return (<tr key={index}>
             <td>{index+1}</td>
             <td><Link to={location.pathname+'/edit/'+ item._id}>{item.name}</Link></td>
