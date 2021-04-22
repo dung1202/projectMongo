@@ -5,6 +5,12 @@ let instantAxios = axios.create({
     baseURL: 'http://localhost:8797'
 })
 
+instantAxios.interceptors.request.use((request) => {
+    let token = localStorage.getItem('accessToken')
+    request.headers['Authorization'] = 'Bearer ' + token
+    return request
+})
+
 export const login = (body) => {
     return instantAxios.post('/login', body)
 }
