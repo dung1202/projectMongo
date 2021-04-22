@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
+const middleware = require('./helper/authenMiddleware')
+
 const StudentRouter = require('./studentController')
 const classRouter = require('./classController')
 const userRouter = require('./userController')
@@ -23,12 +25,14 @@ mongoose.connect(mongoDB, function (err) {
 mongoose.Promise = global.Promise;
 //Lấy kết nối mặc định
 var db = mongoose.connection;
-//Ràng buộc kết nối với sự kiện lỗi (để lấy ra thông báo khi có lỗi)
-app.use('/',authRouter)
-app.use('/student', StudentRouter)
-app.use('/school', SchoolRouter)
-app.use('/class',classRouter)
-app.use('/user',userRouter)
+//Ràng buộc kết nối với sự kiện lỗi (để lấy ra thông báo khi có lỗi)mi
+
+
+app.use('/', authRouter)
+app.use('/student', middleware.authenticateJWT, StudentRouter)
+app.use('/school', middleware.authenticateJWT, SchoolRouter)
+app.use('/class', middleware.authenticateJWT, classRouter)
+app.use('/user', middleware.authenticateJWT, userRouter)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.listen(PORT, () => { console.log("Server started on http://localhost:" + PORT) })
