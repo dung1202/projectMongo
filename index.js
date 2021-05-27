@@ -15,6 +15,7 @@ const classRouter = require('./classController')
 const userRouter = require('./userController')
 const authRouter = require('./authController')
 const SchoolRouter = require('./schoolController')
+const FileRouter = require('./fileController')
 //Thiết lập một kết nối mongoose mặc định
 var mongoDB = 'mongodb://localhost:27017/projectMongo';
 mongoose.connect(mongoDB, function (err) {
@@ -33,6 +34,7 @@ app.use('/student', middleware.authenticateJWT, StudentRouter)
 app.use('/school', middleware.authenticateJWT, SchoolRouter)
 app.use('/class', middleware.authenticateJWT, classRouter)
 app.use('/user', middleware.authenticateJWT, userRouter)
+app.use('/file',FileRouter)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.listen(PORT, () => { console.log("Server started on http://localhost:" + PORT) })
